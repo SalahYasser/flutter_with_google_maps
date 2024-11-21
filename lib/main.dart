@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_with_google_maps/widgets/custom_google_maps.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const TestGoogleMapsWithFlutter());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class TestGoogleMapsWithFlutter extends StatelessWidget {
+  const TestGoogleMapsWithFlutter({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: LatLng(31, 41),
-          ),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
-      ),
+      home: CustomGoogleMaps(),
     );
   }
 }

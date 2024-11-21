@@ -44,6 +44,29 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
           },
           initialCameraPosition: initialCameraPosition,
         ),
+        Positioned(
+          left: 50,
+          right: 50,
+          bottom: 50,
+          child: ElevatedButton(
+            onPressed: () {
+              // CameraPosition newLocation = CameraPosition(
+              //   target: LatLng(29.28340297642408, 32.5660879837098),
+              //   zoom: 10,
+              // );
+              //
+              // googleMapController
+              //     .animateCamera(CameraUpdate.newCameraPosition(newLocation));
+
+              googleMapController.animateCamera(
+                CameraUpdate.newLatLng(
+                  LatLng(29.91109465958638, 31.395767241101126),
+                ),
+              );
+            },
+            child: Text('Change Location'),
+          ),
+        ),
       ],
     );
   }

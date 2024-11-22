@@ -17,15 +17,10 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       zoom: 10,
       target: LatLng(30.07311530250178, 31.341816307394634),
     );
+    initMarkers();
     super.initState();
   }
 
-  void initMapStyle() async {
-    var nightMapStyle = await DefaultAssetBundle.of(context)
-        .loadString('assets/map_styles/night_map_style.json');
-
-    googleMapController.setMapStyle(nightMapStyle);
-  }
   @override
   void dispose() {
     googleMapController.dispose();
@@ -34,11 +29,14 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
   late GoogleMapController googleMapController;
 
+  Set<Marker> markers = {};
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         GoogleMap(
+          markers: markers,
           onMapCreated: (controller) {
             googleMapController = controller;
             initMapStyle();
@@ -47,7 +45,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
         ),
         Positioned(
           left: 50,
-          right: 50,
+          right: 70,
           bottom: 50,
           child: ElevatedButton(
             onPressed: () {
@@ -62,6 +60,21 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
         ),
       ],
     );
+  }
+
+  void initMapStyle() async {
+    var nightMapStyle = await DefaultAssetBundle.of(context)
+        .loadString('assets/map_styles/night_map_style.json');
+
+    googleMapController.setMapStyle(nightMapStyle);
+  }
+
+  void initMarkers() {
+    var marker = Marker(
+      markerId: MarkerId('1'),
+      position: LatLng(30.07311530250178, 31.341816307394634),
+    );
+    markers.add(marker);
   }
 }
 

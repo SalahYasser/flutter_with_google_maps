@@ -21,6 +21,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       target: LatLng(30.02847630076141, 31.259918244401106),
     );
     initMarkers();
+    initPolylines();
     super.initState();
   }
 
@@ -34,11 +35,14 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
   Set<Marker> markers = {};
 
+  Set<Polyline> polylines = {};
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         GoogleMap(
+          polylines: polylines,
           zoomControlsEnabled: false,
           markers: markers,
           onMapCreated: (controller) {
@@ -90,7 +94,6 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     var customMarkerIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'assets/images/marker icon.png');
 
-
     var myMarkers = places
         .map(
           (placeModel) => Marker(
@@ -107,6 +110,15 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     setState(() {});
   }
 
+  void initPolylines() {
+    Polyline polyline = Polyline(polylineId: PolylineId('1'), points: [
+      LatLng(30.02909864687402, 31.25921014121841),
+      LatLng(30.030921587755223, 31.232454863733096),
+      LatLng(30.03754258190257, 31.215382937188323),
+      LatLng(30.046067751123516, 31.211128210174067),
+    ]);
+    polylines.add(polyline);
+  }
 }
 
 // World View 0 -> 3

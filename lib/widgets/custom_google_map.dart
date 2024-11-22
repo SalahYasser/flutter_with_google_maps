@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_with_google_maps/models/place_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:ui' as ui;
 
 class CustomGoogleMap extends StatefulWidget {
   const CustomGoogleMap({super.key});
@@ -16,7 +18,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   void initState() {
     initialCameraPosition = const CameraPosition(
       zoom: 12,
-      target: LatLng(30.02869588356264, 31.223202953446414),
+      target: LatLng(30.02847630076141, 31.259918244401106),
     );
     initMarkers();
     super.initState();
@@ -70,13 +72,25 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     googleMapController.setMapStyle(nightMapStyle);
   }
 
-  void initMarkers() async {
-    var customMarkerIcon = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(),
-      'assets/images/marker icon.png',
-    );
+  Future<Uint8List> getImageFromRowData(String image, double width) async {
+    var imageData = await rootBundle.load(image);
+    var imageCodec = await ui.instantiateImageCodec(
+        imageData.buffer.asUint8List(),
+        targetHeight: width.round());
 
-    var myMarkers = places.map(
+    var imageFrameInfo = await imageCodec.getNextFrame();
+    var imageByteData =
+        await imageFrameInfo.image.toByteData(format: ui.ImageByteFormat.png);
+
+    return imageByteData!.buffer.asUint8List();
+  }
+
+  void initMarkers() async {
+    var customMarkerIcon = BitmapDescriptor.fromBytes(
+      await getImageFromRowData('assets/images/marker icon.png', 100),
+    );
+    var myMarkers = places
+        .map(
           (placeModel) => Marker(
             icon: customMarkerIcon,
             infoWindow: InfoWindow(title: placeModel.name),
@@ -85,7 +99,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
               placeModel.id.toString(),
             ),
           ),
-        ).toSet();
+        )
+        .toSet();
     markers.addAll(myMarkers);
     setState(() {});
   }

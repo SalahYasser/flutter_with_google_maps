@@ -15,8 +15,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   @override
   void initState() {
     initialCameraPosition = const CameraPosition(
-      zoom: 10,
-      target: LatLng(30.07311530250178, 31.341816307394634),
+      zoom: 12,
+      target: LatLng(30.02869588356264, 31.223202953446414),
     );
     initMarkers();
     super.initState();
@@ -70,17 +70,24 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     googleMapController.setMapStyle(nightMapStyle);
   }
 
-  void initMarkers() {
-    var marker = places.map(
-      (placeModel) => Marker(
-        infoWindow: InfoWindow(title: placeModel.name),
-        position: placeModel.latLng,
-        markerId: MarkerId(
-          placeModel.id.toString(),
-        ),
-      ),
-    ).toSet();
-    markers.addAll(marker);
+  void initMarkers() async {
+    var customMarkerIcon = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(),
+      'assets/images/marker icon.png',
+    );
+
+    var myMarkers = places.map(
+          (placeModel) => Marker(
+            icon: customMarkerIcon,
+            infoWindow: InfoWindow(title: placeModel.name),
+            position: placeModel.latLng,
+            markerId: MarkerId(
+              placeModel.id.toString(),
+            ),
+          ),
+        ).toSet();
+    markers.addAll(myMarkers);
+    setState(() {});
   }
 }
 

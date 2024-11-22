@@ -43,6 +43,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     return Stack(
       children: [
         GoogleMap(
+          polygons: polygons,
           polylines: polylines,
           zoomControlsEnabled: false,
           markers: markers,

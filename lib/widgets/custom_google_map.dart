@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_with_google_maps/models/place_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'dart:ui' as ui;
 
 class CustomGoogleMap extends StatefulWidget {
   const CustomGoogleMap({super.key});
@@ -17,7 +15,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   @override
   void initState() {
     initialCameraPosition = const CameraPosition(
-      zoom: 12,
+      zoom: 1,
       target: LatLng(30.02847630076141, 31.259918244401106),
     );
     initMarkers();
@@ -77,19 +75,6 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     googleMapController.setMapStyle(nightMapStyle);
   }
 
-  // Future<Uint8List> getImageFromRowData(String image, double width) async {
-  //   var imageData = await rootBundle.load(image);
-  //   var imageCodec = await ui.instantiateImageCodec(
-  //       imageData.buffer.asUint8List(),
-  //       targetHeight: width.round());
-  //
-  //   var imageFrameInfo = await imageCodec.getNextFrame();
-  //   var imageByteData =
-  //       await imageFrameInfo.image.toByteData(format: ui.ImageByteFormat.png);
-  //
-  //   return imageByteData!.buffer.asUint8List();
-  // }
-
   void initMarkers() async {
     var customMarkerIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'assets/images/marker icon.png');
@@ -111,13 +96,36 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   }
 
   void initPolylines() {
-    Polyline polyline = Polyline(polylineId: PolylineId('1'), points: [
-      LatLng(30.02909864687402, 31.25921014121841),
-      LatLng(30.030921587755223, 31.232454863733096),
-      LatLng(30.03754258190257, 31.215382937188323),
-      LatLng(30.046067751123516, 31.211128210174067),
-    ]);
+    Polyline polyline = Polyline(
+      polylineId: PolylineId('1'),
+      zIndex: 2,
+      width: 5,
+      startCap: Cap.roundCap,
+      color: Colors.green,
+      points: [
+        LatLng(30.02909864687402, 31.25921014121841),
+        LatLng(30.030921587755223, 31.232454863733096),
+        LatLng(30.03754258190257, 31.215382937188323),
+        LatLng(30.046067751123516, 31.211128210174067),
+      ],
+    );
     polylines.add(polyline);
+
+
+     Polyline polyline2 = Polyline(
+      polylineId: PolylineId('2'),
+      zIndex: 1,
+      geodesic: true,
+      width: 5,
+      startCap: Cap.roundCap,
+      color: Colors.cyan,
+      points: [
+        LatLng(-31.59001195057221, 22.222114094760947),
+        LatLng(84.30464358118809, 58.11661595700817),
+      ],
+    );
+
+    polylines.add(polyline2);
   }
 }
 

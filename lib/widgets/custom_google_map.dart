@@ -39,6 +39,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
           //     northeast: LatLng(30.086209095519088, 31.36544760712294),
           //   ),
           // ),
+          mapType: MapType.hybrid,
           onMapCreated: (controller) {
             googleMapController = controller;
           },

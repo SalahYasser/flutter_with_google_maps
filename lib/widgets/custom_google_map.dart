@@ -18,8 +18,9 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       zoom: 1,
       target: LatLng(30.02847630076141, 31.259918244401106),
     );
-    initMarkers();
-    initPolylines();
+    // initMarkers();
+    // initPolylines();
+    initPolygons();
     super.initState();
   }
 
@@ -34,6 +35,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   Set<Marker> markers = {};
 
   Set<Polyline> polylines = {};
+
+  Set<Polygon> polygons = {};
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +114,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     );
     polylines.add(polyline);
 
-
-     Polyline polyline2 = Polyline(
+    Polyline polyline2 = Polyline(
       polylineId: PolylineId('2'),
       zIndex: 1,
       geodesic: true,
@@ -127,6 +129,41 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
     polylines.add(polyline2);
   }
+
+  void initPolygons() {
+    Polygon polygon = Polygon(
+        holes: const [
+          [
+            LatLng(25.030949373562184, 29.71903473330491),
+            LatLng(28.753297577743304, 26.950480244745513),
+            LatLng(29.673819683117372, 34.245401595552806),
+          ]
+        ],
+        strokeWidth: 3,
+        fillColor: Colors.black.withOpacity(.5),
+        points: const [
+          LatLng(31.5, 25.0),
+          LatLng(31.5, 28.0),
+          LatLng(31.2, 30.0),
+          LatLng(31.0, 32.0),
+          LatLng(31.0, 34.0),
+          LatLng(31.0, 34.0),
+          LatLng(29.5, 34.5),
+          LatLng(28.0, 34.5),
+          LatLng(25.0, 34.0),
+          LatLng(25.0, 34.0),
+          LatLng(22.0, 36.0),
+          LatLng(22.0, 36.0),
+          LatLng(22.0, 31.0),
+          LatLng(22.0, 25.0),
+          LatLng(22.0, 25.0),
+          LatLng(25.0, 25.0),
+          LatLng(31.5, 25.0)
+        ],
+        polygonId: const PolygonId('1'));
+    polygons.add(polygon);
+  }
+
 }
 
 // World View 0 -> 3

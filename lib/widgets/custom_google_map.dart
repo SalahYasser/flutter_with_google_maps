@@ -15,12 +15,13 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   @override
   void initState() {
     initialCameraPosition = const CameraPosition(
-      zoom: 1,
+      zoom: 12,
       target: LatLng(30.02847630076141, 31.259918244401106),
     );
     // initMarkers();
     // initPolylines();
-    initPolygons();
+    // initPolygons();
+    initCircles();
     super.initState();
   }
 
@@ -38,11 +39,14 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
   Set<Polygon> polygons = {};
 
+  Set<Circle> circles = {};
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         GoogleMap(
+          circles: circles,
           polygons: polygons,
           polylines: polylines,
           zoomControlsEnabled: false,
@@ -165,6 +169,14 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     polygons.add(polygon);
   }
 
+  void initCircles() {
+    Circle salahAlDinCitadel = Circle(
+        circleId: CircleId('1'),
+        fillColor: Colors.black.withOpacity(0.5),
+        center: LatLng(30.028968604725662, 31.259650023498565),
+        radius: 1000);
+    circles.add(salahAlDinCitadel);
+  }
 }
 
 // World View 0 -> 3

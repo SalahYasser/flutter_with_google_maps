@@ -39,6 +39,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     return Stack(
       children: [
         GoogleMap(
+          zoomControlsEnabled: false,
           markers: markers,
           onMapCreated: (controller) {
             googleMapController = controller;
@@ -72,23 +73,24 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     googleMapController.setMapStyle(nightMapStyle);
   }
 
-  Future<Uint8List> getImageFromRowData(String image, double width) async {
-    var imageData = await rootBundle.load(image);
-    var imageCodec = await ui.instantiateImageCodec(
-        imageData.buffer.asUint8List(),
-        targetHeight: width.round());
-
-    var imageFrameInfo = await imageCodec.getNextFrame();
-    var imageByteData =
-        await imageFrameInfo.image.toByteData(format: ui.ImageByteFormat.png);
-
-    return imageByteData!.buffer.asUint8List();
-  }
+  // Future<Uint8List> getImageFromRowData(String image, double width) async {
+  //   var imageData = await rootBundle.load(image);
+  //   var imageCodec = await ui.instantiateImageCodec(
+  //       imageData.buffer.asUint8List(),
+  //       targetHeight: width.round());
+  //
+  //   var imageFrameInfo = await imageCodec.getNextFrame();
+  //   var imageByteData =
+  //       await imageFrameInfo.image.toByteData(format: ui.ImageByteFormat.png);
+  //
+  //   return imageByteData!.buffer.asUint8List();
+  // }
 
   void initMarkers() async {
-    var customMarkerIcon = BitmapDescriptor.fromBytes(
-      await getImageFromRowData('assets/images/marker icon.png', 100),
-    );
+    var customMarkerIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'assets/images/marker icon.png');
+
+
     var myMarkers = places
         .map(
           (placeModel) => Marker(
@@ -104,6 +106,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     markers.addAll(myMarkers);
     setState(() {});
   }
+
 }
 
 // World View 0 -> 3

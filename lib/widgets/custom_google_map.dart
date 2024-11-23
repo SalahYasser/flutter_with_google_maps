@@ -20,7 +20,6 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       target: LatLng(30.02847630076141, 31.259918244401106),
     );
     location = Location();
-    checkAndRequestLocationService();
     super.initState();
   }
 
@@ -39,6 +38,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
         GoogleMap(
           onMapCreated: (controller) {
             googleMapController = controller;
+            initMapStyle();
           },
           initialCameraPosition: initialCameraPosition,
         ),
@@ -46,7 +46,15 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     );
   }
 
-  void checkAndRequestLocationService() async {
+
+  void initMapStyle() async {
+    var nightMapStyle = await DefaultAssetBundle.of(context)
+        .loadString('assets/map_styles/night_map_style.json');
+
+    googleMapController.setMapStyle(nightMapStyle);
+  }
+
+  Future<void> checkAndRequestLocationService() async {
     var isServiceEnabled = await location.requestService();
     if (!isServiceEnabled) {
       isServiceEnabled = await location.requestService();
@@ -54,10 +62,9 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
         //  show error bar
       }
     }
-    checkAndRequestLocationPermission();
   }
 
-  void checkAndRequestLocationPermission() async {
+  Future<void> checkAndRequestLocationPermission() async {
     var permissionStatus = await location.hasPermission();
     if (permissionStatus == PermissionStatus.denied) {
       permissionStatus = await location.requestPermission();
@@ -67,6 +74,9 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     }
   }
 
+  void getLocationData() {
+    location.onLocationChanged.listen((locationData) {});
+  }
 
 }
 

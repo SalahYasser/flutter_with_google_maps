@@ -26,17 +26,18 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
   @override
   void dispose() {
-    googleMapController.dispose();
+    googleMapController!.dispose();
     super.dispose();
   }
 
-  late GoogleMapController googleMapController;
+  GoogleMapController? googleMapController;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         GoogleMap(
+          zoomControlsEnabled: false,
           onMapCreated: (controller) {
             googleMapController = controller;
             initMapStyle();
@@ -51,7 +52,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     var nightMapStyle = await DefaultAssetBundle.of(context)
         .loadString('assets/map_styles/night_map_style.json');
 
-    googleMapController.setMapStyle(nightMapStyle);
+    googleMapController!.setMapStyle(nightMapStyle);
   }
 
   Future<void> checkAndRequestLocationService() async {
@@ -80,7 +81,14 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   }
 
   void getLocationData() {
-    location.onLocationChanged.listen((locationData) {});
+    location.onLocationChanged.listen(
+      (locationData) {
+        var cameraPosition = CameraPosition(
+            target: LatLng(locationData.latitude!, locationData.longitude!));
+
+        googleMapController?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+      },
+    );
   }
 
   void updateMyLocation() async {

@@ -16,8 +16,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   @override
   void initState() {
     initialCameraPosition = const CameraPosition(
-      zoom: 12,
-      target: LatLng(30.02847630076141, 31.259918244401106),
+      zoom: 17,
+      target: LatLng(31.187084851056554, 29.928110526889437),
     );
     location = Location();
     updateMyLocation();
@@ -82,11 +82,12 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
   void getLocationData() {
     location.onLocationChanged.listen(
-      (locationData) {
+          (locationData) {
         var cameraPosition = CameraPosition(
-            target: LatLng(locationData.latitude!, locationData.longitude!));
-
-        googleMapController?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+            target: LatLng(locationData.latitude!, locationData.longitude!),
+            zoom: 15);
+        googleMapController
+            ?.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
       },
     );
   }
